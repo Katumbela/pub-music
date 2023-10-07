@@ -1,6 +1,6 @@
 import os
-from flask import Flask
-import numpy as np
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
@@ -8,34 +8,24 @@ print(os.listdir(os.getcwd()))
 
 @app.route('/')
 def home():
-    print(os.listdir(os.getcwd()))
-    return 'Home Page Route'
+   
+    return render_template("index.html")
 
 
 @app.route('/about')
 def about():
-    return 'About Page Route'
-
-
-@app.route('/portfolio')
-def portfolio():
-    a = np.random.choice([1, 2, 3, 4, 5, 6])
-    return f'Portfolio {a} Page Route'
+    return render_template("about.html")
 
 
 @app.route('/contact')
+def portfolio():
+    
+    return render_template("contact.html")
+
+
+@app.route('/listing-page')
 def contact():
-    return 'Contact Page Route'
-
-
-@app.route('/api')
-def api():
-    with open(
-            os.path.join(os.getcwd(), 'data', 'data.json'),
-            mode='r'
-    ) as my_file:
-        text = my_file.read()
-        return text
+    return render_template("listing-page.html")
 
 
 if __name__ == '__main__':
