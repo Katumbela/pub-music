@@ -28,6 +28,12 @@ def contact():
     return render_template("listing-page.html")
 
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
+
+
 if __name__ == '__main__':
     #port = int(os.environ.get('PORT', 5000))
     print(os.getcwd())
