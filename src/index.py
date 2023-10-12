@@ -5,7 +5,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
 from datetime import datetime
-from google.api_core.exceptions import RetryError
 
 
 app = Flask(__name__)
@@ -149,34 +148,26 @@ def sucesso_cadastro():
 def login():
     email = request.form['email']
     password = request.form['password']
-    try:
-        # Verificar se as credenciais estão corretas no Firestore
-        usuarios_ref = db.collection('usuarios')
-        query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
-        resultados = query.stream()
 
-        # Converta os resultados em uma lista
-        resultados_lista = list(resultados)
+    # Verificar se as credenciais estão corretas no Firestore
+    usuarios_ref = db.collection('usuarios')
+    query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
+    resultados = query.stream()
 
-        # Verifique se há pelo menos um documento
-        if len(resultados_lista) == 1:
-            # Credenciais corretas, recuperar dados do usuário e armazenar na sessão
-            usuario_data = resultados_lista[0].to_dict()
-            session['usuario_data'] = usuario_data
+    # Converta os resultados em uma lista
+    resultados_lista = list(resultados)
 
-            return redirect(url_for('dashboard'))
-        
-    except RetryError as e:
-        # Capturar a exceção e personalizar a mensagem
-        mensagem_erro = "Ocorreu um erro ao tentar acessar um serviço. Por favor, tente novamente mais tarde."
-        # Você pode adicionar informações adicionais ao log ou gravar em um arquivo se necessário
+    # Verifique se há pelo menos um documento
+    if len(resultados_lista) == 1:
+        # Credenciais corretas, recuperar dados do usuário e armazenar na sessão
+        usuario_data = resultados_lista[0].to_dict()
+        session['usuario_data'] = usuario_data
 
-        return render_template('erro.html', mensagem_erro=mensagem_erro)
+        return redirect(url_for('dashboard'))
     else:
         # Credenciais incorretas
-        mensagem_erro = "Falha na autenticação, email ou senha incorretos!"
-        return render_template('erro.html', mensagem_erro=mensagem_erro)
-   
+        return "Falha na autenticação"
+
 
 # Rota para a página de sucesso de login
 @app.route('/sucesso_login')
@@ -190,6 +181,7 @@ def sucesso_login():
     else:
         # Se a sessão não contiver dados do usuário, redirecionar para a página de login
         return redirect(url_for('login'))
+
 
 @app.route('/dashboard')
 def outra_rota():
