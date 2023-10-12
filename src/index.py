@@ -49,16 +49,28 @@ def logout():
 
 @app.route('/')
 def home():
-     usuario_data = session.get('usuario_data', None)
+        usuario_data = session.get('usuario_data', None)
+        # Obter todas as músicas da coleção 'musicas'
+        tracks_ref = db.collection('musicas')
+        tracks = tracks_ref.stream()
 
-     if usuario_data:
-        # Exibir dados do usuário
-        
-        return render_template("index.html", user = usuario_data)
-     else:
-            # Se a sessão não contiver dados do usuário, redirecionar para a página de login
+        # Criar uma lista para armazenar os dados das faixas
+        tracks_data = []
+
+        # Iterar sobre as faixas e adicionar os dados à lista
+        for track in tracks:
+            track_data = track.to_dict()
+            tracks_data.append(track_data)
+            print(tracks_data)
+
+        if usuario_data:
+            # Exibir dados do usuário
             
-        return render_template("index.html", user="")
+            return render_template("index.html",tracks_data = tracks_data,  user = usuario_data)
+        else:
+                # Se a sessão não contiver dados do usuário, redirecionar para a página de login
+                
+            return render_template("index.html",tracks_data = tracks_data, user="")
 
 @app.route('/sucesso_upload')
 def suc():
@@ -92,7 +104,7 @@ def conta():
 
 
 
-@app.route('/uploadd', methods=['POST'])
+@app.route('/uploaddd', methods=['POST'])
 def uploadd():
     if 'file' in request.files:
         file = request.files['file']
@@ -214,66 +226,63 @@ def dashboard():
 
 @app.route('/detail-page')
 def details():
+
     # Recuperar dados do usuário da sessão
     usuario_data = session.get('usuario_data', None)
     return render_template("detail-page.html", user = usuario_data)
-    
-
-
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp3', 'wav', 'mp4', 'avi'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# Rota para a página de upload
+ 
+  
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'ficheiro' not in request.files or 'capa' not in request.files:
-       
-        msg = "Ficheiro e/ou capa não foram fornecidos", 400
-        return render_template("erro.html", mensagem_erro = msg)
-
-    file = request.files['ficheiro']
-    capa = request.files['capa']
+    # Obter dados do formulário
     titulo = request.form['titulo']
     album = request.form['album']
-    descricao = request.form.get('message', '')
+    message = request.form['message']
 
-    # Verifica se os arquivos têm extensões permitidas
-    if file and capa:
-        # Define os caminhos seguros para os arquivos no sistema de arquivos do servidor
-        filename = secure_filename(file.filename)
-        capa_filename = secure_filename(capa.filename)
+    # Recuperar dados do usuário da sessão
+    usuario_data = session.get('usuario_data', None)
 
-        # Salva os arquivos no Firebase Storage
-        blob_file = bucket.blob(f'musicas/{filename}')
-        blob_capa = bucket.blob(f'musicas/{capa_filename}')
-        blob_file.upload_from_file(file)
-        blob_capa.upload_from_file(capa)
+    # Verificar se foram fornecidos arquivos
+    if 'ficheiro' not in request.files or 'capa' not in request.files:
+        return redirect(request.url)
 
-        # Salva os metadados no Firestore
-        usuario_data = session.get('usuario_data', {})
-        usuario_id = usuario_data.get('uid', '')
+    ficheiro = request.files['ficheiro']
+    capa = request.files['capa']
 
-        if usuario_id:
-            musica_data = {
-                'titulo': titulo,
-                'album': album,
-                'descricao': descricao,
-                'id_usuario': usuario_id,
-                'nome_completo': usuario_data.get('nome_completo', ''),
-                'nome_artistico': usuario_data.get('nome_artistico', ''),
-                'foto_perfil': usuario_data.get('foto_perfil', ''),
-                'url_ficheiro': blob_file.public_url,
-                'url_capa': blob_capa.public_url,
-                'timestamp': firestore.SERVER_TIMESTAMP
-            }
+    # Verificar se os nomes de arquivo são válidos
+    if ficheiro.filename == '' or capa.filename == '':
+        return redirect(request.url)
 
-            db.collection('musicas').add(musica_data)
+    # Gerar nomes de arquivo seguros
+    ficheiro_filename = secure_filename(ficheiro.filename)
+    capa_filename = secure_filename(capa.filename)
 
-            return redirect(url_for('sucesso_upload'))
+    # Enviar arquivos para o Firebase Storage
+    ficheiro_blob = bucket.blob(f'tracks/{ficheiro_filename}')
+    capa_blob = bucket.blob(f'covers/{capa_filename}')
 
-    return "Extensões de arquivo não permitidas ou erro no upload", 400
+    ficheiro_blob.upload_from_file(ficheiro)
+    capa_blob.upload_from_file(capa)
+
+    # Obter URLs dos arquivos no Firebase Storage
+    ficheiro_url = ficheiro_blob.public_url
+    capa_url = capa_blob.public_url
+
+    # Adicionar dados ao Firestore
+    doc_ref = db.collection('musicas').add({
+        'titulo': titulo,
+        'album': album,
+        'message': message,
+        'ficheiro_url': ficheiro_url,
+        'capa_url': capa_url,
+        'timestamp': datetime.now(),
+        'usuario_id': usuario_data.get('uid', ''),  # Assumindo que 'uid' é a chave correta
+        'nome_completo': usuario_data.get('nome_completo', ''),
+        'nome_artistico': usuario_data.get('nome_artistico', ''),
+        'foto_perfil_url': usuario_data.get('foto_perfil_url', ''),
+    })
+
+    return render_template("success.html", msg = f"Seu projecto foi publicado com sucesso{usuario_data.nome_completo}")
 
 
 @app.errorhandler(404)

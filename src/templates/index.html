@@ -541,7 +541,40 @@ https://templatemo.com/tm-584-pod-talk
                             </div>
                         </div>
 
+                        {% for track in tracks_data %}
                         <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                          <div class="custom-block custom-block-full">
+                            <div class="custom-block-image-wrap">
+                                <a href="detail-page">
+                                    <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="{{track.capa_url}}">
+                                </a>
+                            </div>
+                            <div class="custom-block-info">
+                              <h5 class="mb-2">
+                                <a href="detail-page">
+                                  {{ track.titulo }}
+                                </a>
+                              </h5>
+                              <div class="profile-block d-flex">
+                                <img src="{{ track.foto_perfil_url }}" class="profile-block-image img-fluid" alt="">
+                                <p>{{ track.nome_artistico }} <strong>Musico</strong></p>
+                              </div>
+                              <p class="mb-0">{{ track.message }}</p>
+                              <!-- ... (seu HTML existente) ... -->
+                            </div>
+                            <div class="social-share d-flex flex-column ms-auto">
+                              <a href="#" class="badge ms-auto">
+                                <i class="bi-heart"></i>
+                              </a>
+                              <a href="#" class="badge ms-auto">
+                                <i class="bi-bookmark"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      
+                        <!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0">
                             <div class="custom-block custom-block-full">
                                 <div class="custom-block-image-wrap">
                                     <a href="detail-page">
@@ -698,7 +731,7 @@ https://templatemo.com/tm-584-pod-talk
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
