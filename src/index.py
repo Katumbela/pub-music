@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
 from datetime import datetime
+from google.api_core.exceptions import RetryError
 
 
 app = Flask(__name__)
@@ -123,6 +124,7 @@ def cadastro():
             'nome_artistico': nome_artistico,
             'email': email,
             'telefone': telefone,
+            'password':password,
             'data_cadastro': data_cadastro,
             'foto_perfil': 'https://firebasestorage.googleapis.com/v0/b/crymoney-16fd9.appspot.com/o/default.png?alt=media&token=30b3a4b7-0286-4c19-bee0-4ac6a7f5dcc2&_gl=1*1gaoxf5*_ga*MzI0NzYxNDQwLjE2OTQ0NDI3ODY.*_ga_CW55HF8NVT*MTY5NzEzOTg5MC4xNC4xLjE2OTcxNDQ5OTcuNS4wLjA.'
         }
@@ -147,26 +149,34 @@ def sucesso_cadastro():
 def login():
     email = request.form['email']
     password = request.form['password']
+    try:
+        # Verificar se as credenciais estão corretas no Firestore
+        usuarios_ref = db.collection('usuarios')
+        query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
+        resultados = query.stream()
 
-    # Verificar se as credenciais estão corretas no Firestore
-    usuarios_ref = db.collection('usuarios')
-    query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
-    resultados = query.stream()
+        # Converta os resultados em uma lista
+        resultados_lista = list(resultados)
 
-    # Converta os resultados em uma lista
-    resultados_lista = list(resultados)
+        # Verifique se há pelo menos um documento
+        if len(resultados_lista) == 1:
+            # Credenciais corretas, recuperar dados do usuário e armazenar na sessão
+            usuario_data = resultados_lista[0].to_dict()
+            session['usuario_data'] = usuario_data
 
-    # Verifique se há pelo menos um documento
-    if len(resultados_lista) == 1:
-        # Credenciais corretas, recuperar dados do usuário e armazenar na sessão
-        usuario_data = resultados_lista[0].to_dict()
-        session['usuario_data'] = usuario_data
+            return redirect(url_for('dashboard'))
+        
+    except RetryError as e:
+        # Capturar a exceção e personalizar a mensagem
+        mensagem_erro = "Ocorreu um erro ao tentar acessar um serviço. Por favor, tente novamente mais tarde."
+        # Você pode adicionar informações adicionais ao log ou gravar em um arquivo se necessário
 
-        return redirect(url_for('dashboard'))
+        return render_template('erro.html', mensagem_erro=mensagem_erro)
     else:
         # Credenciais incorretas
-        return "Falha na autenticação"
-
+        mensagem_erro = "Falha na autenticação, email ou senha incorretos!"
+        return render_template('erro.html', mensagem_erro=mensagem_erro)
+   
 
 # Rota para a página de sucesso de login
 @app.route('/sucesso_login')
@@ -181,7 +191,6 @@ def sucesso_login():
         # Se a sessão não contiver dados do usuário, redirecionar para a página de login
         return redirect(url_for('login'))
 
-# Outras rotas que precisam dos dados do usuário
 @app.route('/dashboard')
 def outra_rota():
     # Recuperar dados do usuário da sessão
