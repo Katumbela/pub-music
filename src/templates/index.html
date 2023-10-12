@@ -87,7 +87,11 @@ https://templatemo.com/tm-584-pod-talk
                         </ul>
 
                         <div class="ms-4">
+                            {%if user.nome_completo != "" %}
+                            <a href="/dashboard" class="btn custom-btn custom-border-btn smoothscroll">Meu Perfil</a>
+                            {%else %}
                             <a href="/conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
+                            {%endif%}
                         </div>
                     </div>
                 </div>
@@ -103,7 +107,7 @@ https://templatemo.com/tm-584-pod-talk
                                 <div class="row mb-5">
                                     <div class="col-12 col-sm-12"> <h1 class="text-white">Coloque Suas Musicas</h1>
 
-                                        <p class="text-white">Deixe o Marketing com a Pub Music, de qualquer parte do mundo.</p>
+                                        <p class="text-white"><b>{{user.nome_artistico}},</b> Deixe o Marketing com a Pub Music, de qualquer parte do mundo.</p>
         
                                         <a href="/conta" class="btn custom-btn smoothscroll mt-3">Comece Gratuitamente</a>
                                     </div>

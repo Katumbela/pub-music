@@ -5,7 +5,8 @@ from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
 from datetime import datetime
-
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -48,8 +49,21 @@ def logout():
 
 @app.route('/')
 def home():
-   
-    return render_template("index.html")
+     usuario_data = session.get('usuario_data', None)
+
+     if usuario_data:
+        # Exibir dados do usuário
+        
+        return render_template("index.html", user = usuario_data)
+     else:
+            # Se a sessão não contiver dados do usuário, redirecionar para a página de login
+            
+        return render_template("index.html", user="")
+
+@app.route('/sucesso_upload')
+def suc():
+    msg = "Projecto enviado com sucesso! volte a pagina inicial"
+    return render_template("success.html", msg = msg)
 
 
 @app.route('/about')
@@ -78,8 +92,8 @@ def conta():
 
 
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/uploadd', methods=['POST'])
+def uploadd():
     if 'file' in request.files:
         file = request.files['file']
         blob = bucket.blob(file.filename)
@@ -171,15 +185,15 @@ def auth_login():
         return "Falha na autenticação"
 
 
-# Rota para a página de sucesso de login
-@app.route('/sucesso_login')
-def sucesso_login():
+
+@app.route('/publicar_musica')
+def pub_musica():
     # Recuperar dados do usuário da sessão
     usuario_data = session.get('usuario_data', None)
 
     if usuario_data:
         # Exibir dados do usuário
-        return f"Login bem-sucedido. Dados do usuário: {usuario_data}"
+        return render_template("post.html", user = usuario_data)
     else:
         # Se a sessão não contiver dados do usuário, redirecionar para a página de login
         return redirect(url_for('login'))
@@ -204,6 +218,62 @@ def details():
     usuario_data = session.get('usuario_data', None)
     return render_template("detail-page.html", user = usuario_data)
     
+
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp3', 'wav', 'mp4', 'avi'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Rota para a página de upload
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'ficheiro' not in request.files or 'capa' not in request.files:
+       
+        msg = "Ficheiro e/ou capa não foram fornecidos", 400
+        return render_template("erro.html", mensagem_erro = msg)
+
+    file = request.files['ficheiro']
+    capa = request.files['capa']
+    titulo = request.form['titulo']
+    album = request.form['album']
+    descricao = request.form.get('message', '')
+
+    # Verifica se os arquivos têm extensões permitidas
+    if file and capa:
+        # Define os caminhos seguros para os arquivos no sistema de arquivos do servidor
+        filename = secure_filename(file.filename)
+        capa_filename = secure_filename(capa.filename)
+
+        # Salva os arquivos no Firebase Storage
+        blob_file = bucket.blob(f'musicas/{filename}')
+        blob_capa = bucket.blob(f'musicas/{capa_filename}')
+        blob_file.upload_from_file(file)
+        blob_capa.upload_from_file(capa)
+
+        # Salva os metadados no Firestore
+        usuario_data = session.get('usuario_data', {})
+        usuario_id = usuario_data.get('uid', '')
+
+        if usuario_id:
+            musica_data = {
+                'titulo': titulo,
+                'album': album,
+                'descricao': descricao,
+                'id_usuario': usuario_id,
+                'nome_completo': usuario_data.get('nome_completo', ''),
+                'nome_artistico': usuario_data.get('nome_artistico', ''),
+                'foto_perfil': usuario_data.get('foto_perfil', ''),
+                'url_ficheiro': blob_file.public_url,
+                'url_capa': blob_capa.public_url,
+                'timestamp': firestore.SERVER_TIMESTAMP
+            }
+
+            db.collection('musicas').add(musica_data)
+
+            return redirect(url_for('sucesso_upload'))
+
+    return "Extensões de arquivo não permitidas ou erro no upload", 400
 
 
 @app.errorhandler(404)
