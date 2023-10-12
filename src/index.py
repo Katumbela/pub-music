@@ -1,6 +1,6 @@
 
 import os
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
@@ -8,6 +8,8 @@ from datetime import datetime
 
 
 app = Flask(__name__)
+
+app.secret_key = '2023_pub-music_katumbela'  # Substitua com uma chave secreta segura
 
 # Configurar credenciais do Firebase
 cred = credentials.Certificate("pub-music.json")
@@ -18,6 +20,30 @@ bucket = storage.bucket()
 
 # Configurar o cliente do Firestore
 db = firestore.client()
+
+
+# Função para atualizar a sessão antes de cada solicitação
+@app.before_request
+def atualizar_sessao():
+    # Verificar se o usuário está autenticado
+    if 'usuario_data' in session:
+        # Recuperar o ID do usuário
+        uid = session['usuario_data'].get('uid')
+
+        # Atualizar os dados da sessão a partir do Firestore
+        if uid:
+            usuario_ref = db.collection('usuarios').document(uid)
+            usuario_atualizado = usuario_ref.get().to_dict()
+
+            # Atualizar a sessão
+            session['usuario_data'].update(usuario_atualizado)
+
+# Rota para o logout
+@app.route('/sair')
+def logout():
+    # Limpar os dados da sessão
+    session.pop('usuario_data', None)
+    return redirect(url_for('home'))  # Redirecionar para a página inicial ou outra página desejada após o logout
 
 
 @app.route('/')
@@ -81,6 +107,13 @@ def cadastro():
         telefone = request.form['telefone']
         password = request.form['password']
 
+        # Verificar se já existe uma conta com o mesmo e-mail ou telefone
+        conta_existente = db.collection('usuarios').where('email', '==', email).get() or \
+                          db.collection('usuarios').where('telefone', '==', telefone).get()
+
+        if conta_existente:
+            msg = "Já existe uma conta com esses dados. Por favor, use informações diferentes."
+            return render_template('success.html', msg=msg)
         # Adicione a data de cadastro
         data_cadastro = datetime.now()
 
@@ -91,7 +124,7 @@ def cadastro():
             'email': email,
             'telefone': telefone,
             'data_cadastro': data_cadastro,
-            'foto_perfil': 'default.png'
+            'foto_perfil': 'https://firebasestorage.googleapis.com/v0/b/crymoney-16fd9.appspot.com/o/default.png?alt=media&token=30b3a4b7-0286-4c19-bee0-4ac6a7f5dcc2&_gl=1*1gaoxf5*_ga*MzI0NzYxNDQwLjE2OTQ0NDI3ODY.*_ga_CW55HF8NVT*MTY5NzEzOTg5MC4xNC4xLjE2OTcxNDQ5OTcuNS4wLjA.'
         }
 
         db.collection('usuarios').add(usuario_data)
@@ -100,36 +133,66 @@ def cadastro():
 
     return render_template('cadastro.html')
 
+
 # Rota para a página de sucesso de cadastro
 @app.route('/sucesso_cadastro')
 def sucesso_cadastro():
-    return "Cadastro realizado com sucesso!"
+    msg = "Sua conta foi criada com sucesso, agora vamos colocar seus projectos On"
+    return render_template("success.html", msg=msg)
 
 
 
 # Rota para a página de login
 @app.route('/auth_login', methods=['POST'])
-def auth_login():
+def login():
     email = request.form['email']
     password = request.form['password']
 
-    try:
-        # Autenticar o usuário
-        user = auth.sign_in_with_email_and_password(email, password)
+    # Verificar se as credenciais estão corretas no Firestore
+    usuarios_ref = db.collection('usuarios')
+    query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
+    resultados = query.stream()
 
-        # Pode adicionar mais lógica aqui se necessário
+    # Converta os resultados em uma lista
+    resultados_lista = list(resultados)
 
-        return redirect(url_for('sucesso_login'))
+    # Verifique se há pelo menos um documento
+    if len(resultados_lista) == 1:
+        # Credenciais corretas, recuperar dados do usuário e armazenar na sessão
+        usuario_data = resultados_lista[0].to_dict()
+        session['usuario_data'] = usuario_data
 
-    except auth.AuthError as e:
-        # Tratar erros de autenticação, se necessário
-        print(f"Erro de autenticação: {e}")
+        return redirect(url_for('dashboard'))
+    else:
+        # Credenciais incorretas
         return "Falha na autenticação"
+
 
 # Rota para a página de sucesso de login
 @app.route('/sucesso_login')
 def sucesso_login():
-    return "Login bem-sucedido!"
+    # Recuperar dados do usuário da sessão
+    usuario_data = session.get('usuario_data', None)
+
+    if usuario_data:
+        # Exibir dados do usuário
+        return f"Login bem-sucedido. Dados do usuário: {usuario_data}"
+    else:
+        # Se a sessão não contiver dados do usuário, redirecionar para a página de login
+        return redirect(url_for('login'))
+
+# Outras rotas que precisam dos dados do usuário
+@app.route('/dashboard')
+def outra_rota():
+    # Recuperar dados do usuário da sessão
+    usuario_data = session.get('usuario_data', None)
+
+    if usuario_data:
+        # Exibir dados do usuário
+        return render_template("dashboard.html", user = usuario_data)
+    else:
+        # Se a sessão não contiver dados do usuário, redirecionar para a página de login
+        return redirect(url_for('conta'))
 
 
 
