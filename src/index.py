@@ -145,12 +145,14 @@ def sucesso_cadastro():
 
 # Rota para a página de login
 @app.route('/auth_login', methods=['POST'])
-def login():
+def auth_login():
     email = request.form['email']
     password = request.form['password']
 
     # Verificar se as credenciais estão corretas no Firestore
     usuarios_ref = db.collection('usuarios')
+        
+    # Pelo seguinte trecho corrigido
     query = usuarios_ref.where('email', '==', email).where('password', '==', password).limit(1)
     resultados = query.stream()
 
@@ -184,7 +186,7 @@ def sucesso_login():
 
 
 @app.route('/dashboard')
-def outra_rota():
+def dashboard():
     # Recuperar dados do usuário da sessão
     usuario_data = session.get('usuario_data', None)
 
@@ -195,6 +197,13 @@ def outra_rota():
         # Se a sessão não contiver dados do usuário, redirecionar para a página de login
         return redirect(url_for('conta'))
 
+
+@app.route('/detail-page')
+def details():
+    # Recuperar dados do usuário da sessão
+    usuario_data = session.get('usuario_data', None)
+    return render_template("detail-page.html", user = usuario_data)
+    
 
 
 @app.errorhandler(404)
