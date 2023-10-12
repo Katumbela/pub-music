@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Storage</title>
+</head>
+<body>
+    <h1>File Storage</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".jpg, .png, .gif, .jpeg">
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Files:</h2>
+    <ul>
+        {% for file in files %}
+            <li><a href="{{ file.get('url') }}">{{ file.get('name') }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
