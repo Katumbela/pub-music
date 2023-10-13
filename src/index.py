@@ -61,7 +61,7 @@ def home():
         for track in tracks:
             track_data = track.to_dict()
             tracks_data.append(track_data)
-            print(tracks_data)
+            # print(tracks_data)
 
         if usuario_data:
             # Exibir dados do usuário
@@ -232,6 +232,7 @@ def details():
     return render_template("detail-page.html", user = usuario_data)
  
   
+
 @app.route('/upload', methods=['POST'])
 def upload():
     # Obter dados do formulário
@@ -253,16 +254,12 @@ def upload():
     if ficheiro.filename == '' or capa.filename == '':
         return redirect(request.url)
 
-    # Gerar nomes de arquivo seguros
-    ficheiro_filename = secure_filename(ficheiro.filename)
-    capa_filename = secure_filename(capa.filename)
+    # Enviar arquivos para o Firebase Storage com o tipo de conteúdo especificado
+    ficheiro_blob = bucket.blob(f'{ficheiro.filename}')
+    capa_blob = bucket.blob(f'{capa.filename}')
 
-    # Enviar arquivos para o Firebase Storage
-    ficheiro_blob = bucket.blob(f'tracks/{ficheiro_filename}')
-    capa_blob = bucket.blob(f'covers/{capa_filename}')
-
-    ficheiro_blob.upload_from_file(ficheiro)
-    capa_blob.upload_from_file(capa)
+    ficheiro_blob.upload_from_file(ficheiro, content_type=ficheiro.content_type)
+    capa_blob.upload_from_file(capa, content_type=capa.content_type)
 
     # Obter URLs dos arquivos no Firebase Storage
     ficheiro_url = ficheiro_blob.public_url
@@ -279,10 +276,10 @@ def upload():
         'usuario_id': usuario_data.get('uid', ''),  # Assumindo que 'uid' é a chave correta
         'nome_completo': usuario_data.get('nome_completo', ''),
         'nome_artistico': usuario_data.get('nome_artistico', ''),
-        'foto_perfil_url': usuario_data.get('foto_perfil_url', ''),
+        'foto_perfil_url': usuario_data.get('foto_perfil', ''),
     })
 
-    return render_template("success.html", msg = f"Seu projecto foi publicado com sucesso{usuario_data.nome_completo}")
+    return render_template("success.html", msg=f"Seu projeto foi publicado com sucesso {usuario_data.get('nome_completo', '')}")
 
 
 @app.errorhandler(404)

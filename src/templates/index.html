@@ -556,18 +556,16 @@ https://templatemo.com/tm-584-pod-talk
                                 </a>
                               </h5>
                               <div class="profile-block d-flex">
-                                <img src="{{ track.foto_perfil_url }}" class="profile-block-image img-fluid" alt="">
+                                <img src="{{track.foto_perfil_url}}" class="profile-block-image img-fluid" alt="">
                                 <p>{{ track.nome_artistico }} <strong>Musico</strong></p>
                               </div>
-                              <p class="mb-0">{{ track.message }}</p>
+                              <p class="mb-0">{{ track.message[:25] + '...' if track.message|length > 25 else track.message }}</p>
+
                               <!-- ... (seu HTML existente) ... -->
                             </div>
                             <div class="social-share d-flex flex-column ms-auto">
                               <a href="#" class="badge ms-auto">
                                 <i class="bi-heart"></i>
-                              </a>
-                              <a href="#" class="badge ms-auto">
-                                <i class="bi-bookmark"></i>
                               </a>
                             </div>
                           </div>
