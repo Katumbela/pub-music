@@ -7,9 +7,9 @@
         <meta name="description" content="Plataforma de Streaming Angolana , ganhe dinheiro por downloads da sua musica na nossa plataforma, obtenha variados recursos como capa de musicas e publicidade de marketing de suas musicas, assine hoje mesmo">
         <meta name="author" content="Joao Afonso Katombela">
 
-        <title>Pub Music Free CSS Template by TemplateMo</title>
+        <title>{{track.titulo}} | Pub Music</title>
 
-        <link rel="shortcut icon" type="image/x-icon"  href="{{ url_for('static', filename='images/pub.png') }} ">
+        <link rel="shortcut icon" type="image/x-icon"  href="{{track.capa_url}} ">
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
         
@@ -98,7 +98,7 @@ https://templatemo.com/tm-584-pod-talk
 
                         <div class="col-lg-12 col-12 text-center">
 
-                            <h2 class="mb-0">Artistas</h2>
+                            <h2 class="mb-0">{{track.titulo}}</h2>
                         </div>
 
                     </div>
@@ -112,14 +112,14 @@ https://templatemo.com/tm-584-pod-talk
 
                         <div class="col-lg-10 col-12">
                             <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">Daily talk</h4>
+                                <h4 class="section-title">Autor: {{track.nome_artistico}}</h4>
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-3 col-12">
                                     <div class="custom-block-icon-wrap">
                                         <div class="custom-block-image-wrap custom-block-image-detail-page">
-                                            <img src="{{ url_for('static', filename='images/podcast/11683425_4790593.jpg') }}" class="custom-block-image img-fluid" alt="">
+                                            <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -130,49 +130,37 @@ https://templatemo.com/tm-584-pod-talk
                                             <small class="me-4">
                                                 <a href="#">
                                                     <i class="bi-play"></i>
-                                                    Play now
+                                                    Reproduzir
                                                 </a>
                                             </small>
+   </div>
 
-                                            <small>
-                                                <i class="bi-clock-fill custom-icon"></i>
-                                                50 Min
-                                            </small>
+                                        <h2 class="mb-2">{{track.titulo}}</h2>
 
-                                            <small class="ms-auto">Episode <span class="badge">15</span></small>
-                                        </div>
-
-                                        <h2 class="mb-2">Modern Vintage</h2>
-
-                                        <p>What is Content Marketing? If you are wondering what content marketing is all about, this is the place to start.</p>
-
-                                        <p>You are not allowed to redistribute this template ZIP file on any other template collection website. Please contact TemplateMo for more information.</p>
-
-                                        <p>Pub Music HTML CSS Template is made by Bootstrap v5.2.2 framework. You are allowed to modify and use this template for your business websites.</p>
-
+                                        <p>{{track.message}}</p>
                                         <div class="profile-block profile-detail-block d-flex flex-wrap align-items-center mt-5">
                                             <div class="d-flex mb-3 mb-lg-0 mb-md-0">
-                                                <img src="{{ url_for('static', filename='images/profile/woman-posing-black-dress-medium-shot.jpg') }}" class="profile-block-image img-fluid" alt="">
+                                                <img src="{{ track.foto_perfil_url }}" class="profile-block-image img-fluid" alt="">
 
                                                 <p>
-                                                    Elsa
+                                                    @{{track.nome_artistico}} 
                                                     <img src="{{ url_for('static', filename='images/verified.png') }} " class="verified-image img-fluid" alt="">
-                                                    <strong>Influencer</strong>
+                                                    <strong>Pub Music</strong>
                                                 </p>
                                             </div>
 
                                             <ul class="social-icon ms-lg-auto ms-md-auto">
-                                                <li class="social-icon-item">
+                                                <!-- <li class="social-icon-item">
                                                     <a href="#" class="social-icon-link bi-instagram"></a>
                                                 </li>
 
                                                 <li class="social-icon-item">
                                                     <a href="#" class="social-icon-link bi-twitter"></a>
+                                                </li> -->
+                                                <li class="social-icon-item" title="Baixar musica">
+                                                    <a onclick="forceDownload('{{track.ficheiro_url}}')" id="downloadLink" class="social-icon-link bi-download" download="nome_do_arquivo.jpg"></a>
                                                 </li>
-
-                                                <li class="social-icon-item">
-                                                    <a href="#" class="social-icon-link bi-whatsapp"></a>
-                                                </li>
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -191,10 +179,40 @@ https://templatemo.com/tm-584-pod-talk
 
                         <div class="col-lg-12 col-12">
                             <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">Related Musicas</h4>
+                                <h4 class="section-title"> Musicas Relacionadas</h4>
                             </div>
                         </div>
-
+                        {% for track in related %}
+                        <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                          <div class="custom-block custom-block-full">
+                            <div class="custom-block-image-wrap">
+                              <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="{{track.capa_url}}">
+                              </a>
+                            </div>
+                            <div class="custom-block-info">
+                              <h5 class="mb-2">
+                                <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                  {{ track.titulo }}
+                                </a>
+                              </h5>
+                              <div class="profile-block d-flex">
+                                <img src="{{track.foto_perfil_url}}" class="profile-block-image img-fluid" alt="">
+                                <p>{{ track.nome_artistico }} <strong>Musico</strong></p>
+                              </div>
+                              <p class="mb-0">{{ track.message[:25] + '...' if track.message|length > 25 else track.message }}</p>
+                      
+                              <!-- ... (seu HTML existente) ... -->
+                            </div>
+                            <div class="social-share d-flex flex-column ms-auto">
+                              <a href="#" class="badge ms-auto">
+                                <i class="bi-heart"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+<!-- 
                         <div class="col-lg-4 col-12 mb-4 mb-lg-0">
                             <div class="custom-block custom-block-full">
                                 <div class="custom-block-image-wrap">
@@ -351,7 +369,7 @@ https://templatemo.com/tm-584-pod-talk
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -467,6 +485,16 @@ https://templatemo.com/tm-584-pod-talk
         <script src = "{{ url_for('static', filename = 'js/bootstrap.bundle.min.js' ) }}"></script>
         <script src = "{{ url_for('static', filename = 'js/owl.carousel.min.js' ) }}"></script>
         <script src = "{{ url_for('static', filename = 'js/custom.js' ) }}"></script>
+<!-- Adicione o seguinte script JavaScript ao final do seu HTML -->
+<script>
+ function forceDownload(href) {
+	var anchor = document.createElement('a');
+	anchor.href = href;
+	anchor.download = href;
+	document.body.appendChild(anchor);
+	anchor.click();
+}
+</script>
 
     </body>
 </html>

@@ -1,11 +1,12 @@
 
 import os
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, abort, redirect, render_template, request, send_file, session, url_for
 from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
+import urllib3
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -57,11 +58,13 @@ def home():
         # Criar uma lista para armazenar os dados das faixas
         tracks_data = []
 
+       
         # Iterar sobre as faixas e adicionar os dados à lista
         for track in tracks:
             track_data = track.to_dict()
+            track_data['id'] = track.id  # Adicionar o ID do documento à lista
             tracks_data.append(track_data)
-            # print(tracks_data)
+            print(tracks_data)
 
         if usuario_data:
             # Exibir dados do usuário
@@ -224,14 +227,46 @@ def dashboard():
         return redirect(url_for('conta'))
 
 
-@app.route('/detail-page')
-def details():
+@app.route('/details-page/<track_id>')
+def details_page(track_id):
+    # Tentar recuperar a track do Firestore usando o ID fornecido
+    track_ref = db.collection('musicas').document(track_id)
+    track_snapshot = track_ref.get()
+
+    # Verificar se a track existe
+    if not track_snapshot.exists:
+        abort(404)  # Ou redirecione para uma página de erro 404
+
+    # Extrair dados da track
+    track_data = track_snapshot.to_dict()
 
     # Recuperar dados do usuário da sessão
     usuario_data = session.get('usuario_data', None)
-    return render_template("detail-page.html", user = usuario_data)
- 
-  
+
+    # Obter todas as músicas da coleção 'musicas'
+    tracks_ref = db.collection('musicas')
+    tracks = tracks_ref.stream()
+
+    # Criar uma lista para armazenar os dados das faixas relacionadas
+    tracks_data_related = []
+
+    # Iterar sobre as faixas e adicionar os dados à lista
+    for track in tracks:
+        track_dataa = track.to_dict()
+        track_dataa['id'] = track.id  # Adicionar o ID do documento à lista
+
+        # Excluir a faixa principal da lista de faixas relacionadas
+        if track.id != track_id:
+            tracks_data_related.append(track_dataa)
+
+    if usuario_data:
+        # Exibir dados do usuário
+        return render_template('detail-page.html', related=tracks_data_related, track=track_data, user=usuario_data)
+    else:
+        return render_template('detail-page.html', related=tracks_data_related, track=track_data, user=None)
+
+
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -254,16 +289,24 @@ def upload():
     if ficheiro.filename == '' or capa.filename == '':
         return redirect(request.url)
 
+    # Adicionar carimbo de data e hora aos nomes de arquivo
+    agora = datetime.now().strftime("%Y%m%d%H%M%S")
+    ficheiro_nome = secure_filename(f'tracks/{agora}_{ficheiro.filename}')
+    capa_nome = secure_filename(f'covers/{agora}_c{capa.filename}')
+
     # Enviar arquivos para o Firebase Storage com o tipo de conteúdo especificado
-    ficheiro_blob = bucket.blob(f'{ficheiro.filename}')
-    capa_blob = bucket.blob(f'{capa.filename}')
+    ficheiro_blob = bucket.blob(ficheiro_nome)
+    capa_blob = bucket.blob(capa_nome)
 
     ficheiro_blob.upload_from_file(ficheiro, content_type=ficheiro.content_type)
     capa_blob.upload_from_file(capa, content_type=capa.content_type)
 
-    # Obter URLs dos arquivos no Firebase Storage
-    ficheiro_url = ficheiro_blob.public_url
-    capa_url = capa_blob.public_url
+    # Definir a validade dos URLs (por exemplo, 10 anos)
+    validade_infinita = timedelta(days=365 * 10)
+
+    # Gerar URLs de download com validade "infinita"
+    ficheiro_url = ficheiro_blob.generate_signed_url(expiration=validade_infinita, method="GET")
+    capa_url = capa_blob.generate_signed_url(expiration=validade_infinita, method="GET")
 
     # Adicionar dados ao Firestore
     doc_ref = db.collection('musicas').add({
