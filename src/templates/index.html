@@ -108,7 +108,7 @@ https://templatemo.com/tm-584-pod-talk
                                 <div class="row mb-5">
                                     <div class="col-12 col-sm-12"> <h1 class="text-white">Coloque Suas Musicas</h1>
 
-                                        <p class="text-white"><b>{{user.nome_artistico}},</b> Deixe o Marketing com a Pub Music, de qualquer parte do mundo.</p>
+                                        <p class="text-white"><b>{{user.nome_artistico}} </b> Deixe o Marketing com a Pub Music, de qualquer parte do mundo.</p>
         
                                         <a href="/conta" class="btn custom-btn smoothscroll mt-3">Comece Gratuitamente</a>
                                     </div>
@@ -290,72 +290,55 @@ https://templatemo.com/tm-584-pod-talk
                                 <h4 class="section-title">Tracks Em Destaques</h4>
                             </div>
                         </div>
-
-                        <div class="col-lg-6 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block d-flex">
+                        {% for track in tracks_data[:2] %}
+                        <div style="border: none!important;" class="col-lg-6 col-12 mb-4 mb-lg-0">
+                            <div  style="border: none!important;" class="custom-block d-flex">
                                 <div class="">
                                     <div class="custom-block-icon-wrap">
                                         <div class="section-overlay"></div>
-                                        <a href="detail-page" class="custom-block-image-wrap">
-                                            <img src="{{ url_for('static', filename='images/podcast/11683425_4790593.jpg') }}" class="custom-block-image img-fluid" alt="">
-
-                                            <a href="#" class="custom-block-icon">
+                                        <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                            <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="">
+                                             <a href="#" class="custom-block-icon">
                                                 <i class="bi-play-fill"></i>
                                             </a>
                                         </a>
                                     </div>
 
                                     <div class="mt-2">
-                                        <a href="#" class="btn custom-btn">
-                                            Subscribe
-                                        </a>
+                                      
                                     </div>
                                 </div>
 
                                 <div class="custom-block-info">
-                                    <div class="custom-block-top d-flex mb-1">
-                                        <small class="me-4">
-                                            <i class="bi-clock-fill custom-icon"></i>
-                                            50 Min
-                                        </small>
-
-                                        <small>Episode <span class="badge">15</span></small>
-                                    </div>
+                                   
 
                                     <h5 class="mb-2">
-                                        <a href="detail-page">
-                                            Modern Vintage
+                                        <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                            {{track.titulo}}
                                         </a>
                                     </h5>
-
-                                    <div class="profile-block d-flex">
-                                        <img src="{{ url_for('static', filename='images/profile/woman-posing-black-dress-medium-shot.jpg') }}" class="profile-block-image img-fluid" alt="">
-
-                                        <p>
-                                            Elsa
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="verified-image img-fluid" alt="">
-                                            <strong>Influencer</strong></p>
-                                    </div>
-
-                                    <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-
+                                 
+                                  
                                     <div class="custom-block-bottom d-flex justify-content-between mt-3">
                                         <a href="#" class="bi-headphones me-1">
                                             <span>120k</span>
                                         </a>
 
-                                        <a href="#" class="bi-heart me-1">
+                                        <!-- <a href="#" class="bi-heart me-1">
                                             <span>42.5k</span>
-                                        </a>
+                                        </a> -->
 
 
                                         <a href="#" class="bi-download">
                                             <span>50k</span>
                                         </a>
                                     </div>
+                                    
+                                    <small style="font-size: 10px;">@{{track.nome_artistico}}</small>
+
                                 </div>
 
-                                <div class="d-flex flex-column ms-auto">
+                                <!-- <div class="d-flex flex-column ms-auto">
                                     <a href="#" class="badge ms-auto">
                                         <i class="bi-heart"></i>
                                     </a>
@@ -363,10 +346,17 @@ https://templatemo.com/tm-584-pod-talk
                                     <a href="#" class="badge ms-auto">
                                         <i class="bi-bookmark"></i>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
+                        {% endfor %}
+                    
+                        
+                        
+                        
+                        
+<!--                         
                         <div class="col-lg-6 col-12">
                             <div class="custom-block d-flex">
                                 <div class="">
@@ -438,7 +428,7 @@ https://templatemo.com/tm-584-pod-talk
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -571,167 +561,7 @@ https://templatemo.com/tm-584-pod-talk
                           </div>
                         </div>
                       {% endfor %}
-                      
-                      
-                        <!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-full">
-                                <div class="custom-block-image-wrap">
-                                    <a href="detail-page">
-                                        <img src="{{ url_for('static', filename='images/podcast/27376480_7326766.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                    </a>
-                                </div>
-
-                                <div class="custom-block-info">
-                                    <h5 class="mb-2">
-                                        <a href="detail-page">
-                                            Titulo da Musica
-                                        </a>
-                                    </h5>
-
-                                    <div class="profile-block d-flex">
-                                        <img src="{{ url_for('static', filename='images/profile/eddy.jpg') }}" class="profile-block-image img-fluid" alt="">
-
-                                        <p>Eddy Slogan
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="verified-image img-fluid" alt="">
-                                            <strong>Musico</strong></p>
-                                    </div>
-
-                                    <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-
-                                    <div class="custom-block-bottom d-flex justify-content-between mt-3">
-                                        <a href="#" class="bi-headphones me-1">
-                                            <span>100k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-heart me-1">
-                                            <span>2.5k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-chat me-1">
-                                            <span>924k</span>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="social-share d-flex flex-column ms-auto">
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-heart"></i>
-                                    </a>
-
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-bookmark"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-full">
-                                <div class="custom-block-image-wrap">
-                                    <a href="detail-page">
-                                        <img src="{{ url_for('static', filename='images/podcast/capa-m.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                    </a>
-                                </div>
-
-                                <div class="custom-block-info">
-                                    <h5 class="mb-2">
-                                        <a href="detail-page">
-                                            Vintage Show
-                                        </a>
-                                    </h5>
-
-                                    <div class="profile-block d-flex">
-                                        <img src="{{ url_for('static', filename='images/profile/eddy.jpg') }}" class="profile-block-image img-fluid" alt="">
-
-                                        <p>
-                                            Taylor
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="verified-image img-fluid" alt="">
-                                            <strong>Musico</strong>
-                                        </p>
-                                    </div>
-
-                                    <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-
-                                    <div class="custom-block-bottom d-flex justify-content-between mt-3">
-                                        <a href="#" class="bi-headphones me-1">
-                                            <span>100k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-heart me-1">
-                                            <span>2.5k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-chat me-1">
-                                            <span>924k</span>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="social-share d-flex flex-column ms-auto">
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-heart"></i>
-                                    </a>
-
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-bookmark"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-12">
-                            <div class="custom-block custom-block-full">
-                                <div class="custom-block-image-wrap">
-                                    <a href="detail-page">
-                                        <img src="{{ url_for('static', filename='images/podcast/kat.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                    </a>
-                                </div>
-
-                                <div class="custom-block-info">
-                                    <h5 class="mb-2">
-                                        <a href="detail-page">
-                                            Daily Talk
-                                        </a>
-                                    </h5>
-
-                                    <div class="profile-block d-flex">
-                                        <img src="{{ url_for('static', filename='images/profile/kat.jpg') }}" class="profile-block-image img-fluid" alt="">
-
-                                        <p>
-                                           Katumbela
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="verified-image img-fluid" alt="">
-                                            <strong>Vlogger</strong></p>
-                                    </div>
-
-                                    <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-
-                                    <div class="custom-block-bottom d-flex justify-content-between mt-3">
-                                        <a href="#" class="bi-headphones me-1">
-                                            <span>100k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-heart me-1">
-                                            <span>2.5k</span>
-                                        </a>
-
-                                        <a href="#" class="bi-chat me-1">
-                                            <span>924k</span>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="social-share d-flex flex-column ms-auto">
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-heart"></i>
-                                    </a>
-
-                                    <a href="#" class="badge ms-auto">
-                                        <i class="bi-bookmark"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div> -->
-
+                  
                     </div>
                 </div>
             </section>
