@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <meta name="description" content="Plataforma de Streaming Angolana , ganhe dinheiro por downloads da sua musica na nossa plataforma, obtenha variados recursos como capa de musicas e publicidade de marketing de suas musicas, assine hoje mesmo">
-        <meta name="author" content="">
+        <meta name="author" content="Joao Afonso Katombela">
 
-        <title>Postar Musica | Pub Music</title>
+        <title>Pub Music | Todas Músicas</title>
 
         <link rel="shortcut icon" type="image/x-icon"  href="{{ url_for('static', filename='images/pub.png') }} ">
         <!-- CSS FILES -->        
@@ -42,9 +42,17 @@ https://templatemo.com/tm-584-pod-talk
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
                     <a class="navbar-brand me-lg-5 me-0" href="/">
-                        <img src="{{ url_for('static', filename='images/logo3.png') }} " style="height: 1.8em; width: 1.8em;" class="logo-image img-fluid" alt="templatemo Pub Music">
+                        <img style="height: 1.8em; width: 1.8em;" src="{{ url_for('static', filename='images/logo3.png') }} " class="logo-image img-fluid" alt="templatemo Pub Music">
                     </a>
+ <form action="/pesquisar_musicas" method="post" class="custom-form search-form flex-fill me-3" role="search">
+        <div class="input-group input-group-lg">    
+            <input name="search" type="search" class="form-control" id="search" placeholder="Pesquisar Músicas" aria-label="Search">
 
+            <button type="submit" class="form-control" id="submit">
+                <i class="bi-search"></i>
+            </button>
+        </div>
+    </form>
     
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -52,133 +60,80 @@ https://templatemo.com/tm-584-pod-talk
     
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-auto">
-                         
-
                             <li class="nav-item">
-                                <a class="nav-link" href="mailto:{{user.email}}">{{user.email}}</a>
+                                <a class="nav-link" href="/">Home</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="tel:{{user.telefone}}">{{user.telefone}}</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mais</a>
+
+                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                                    <li><a class="dropdown-item active" href="./listing-page">Todas Músicas</a></li>
+
+                                    <li><a class="dropdown-item" href="artistas">Artistas</a></li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/sair">Sair</a>
-                            </li>
+    
                         </ul>
 
                         <div class="ms-4">
-                            <a  class="btn custom-btn custom-border-btn smoothscroll">{{user.nome_artistico}}</a>
+                            <a href="conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
                         </div>
                     </div>
                 </div>
             </nav>
             
 
-            <header class="site-header d-flex flex-column justify-content-center align-items-center">
+             <header class="site-header d-flex flex-column justify-content-center align-items-center">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-lg-12 col-12 text-center">
 
-                            <h2 class="mb-0">Publicar Projecto/Musica</h2>
+                            <h2 class="mb-0">Todos Os Artistas</h2>
                         </div>
 
                     </div>
                 </div>
             </header>
-            
-<!-- 
-            <section class="section-padding" id="section_2">
-                <div class="container">
-                    <div class="row justify-content-center">
 
-                        <div class="col-lg-5 col-12 pe-lg-5">
-                            <div class="contact-info">
-                                <h3 class="mb-4">We love to help you. Get in touch</h3>
 
-                                <p class="d-flex border-bottom pb-3 mb-4">
-                                    <strong class="d-inline me-4">Phone:</strong>
-                                    <span>010-020-0340</span>
-                                </p>
-
-                                <p class="d-flex border-bottom pb-3 mb-4">
-                                    <strong class="d-inline me-4">Email:</strong>
-                                    <a href="#">contato@pub-music.com</a> 
-                                </p>
-
-                                <p class="d-flex">
-                                    <strong class="d-inline me-4">Location:</strong>
-                                    <span>1355 Market Street, Downtown San Francisco, California</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-12 mt-5 mt-lg-0">
-                            <iframe class="google-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.819917806043!2d103.84793601429608!3d1.281807962148459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190c2c94ccb3%3A0x11213560829baa05!2sTwitter!5e0!3m2!1sen!2smy!4v1669212183861!5m2!1sen!2smy" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </div>
-
-                    </div>
-                </div>
-            </section> -->
-
-            <section class="contact-section section-padding pt-0">
+            <section class="topics-section section-padding pb-0" id="section_3">
                 <div class="container">
                     <div class="row">
 
-                        <div class="col-lg-8 col-12 mx-auto">
+                        <div class="col-lg-12 col-12">
                             <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">Informações do seu projecto</h4>
+                                <h4 class="section-title">Musicos na Pub Music</h4>
                             </div>
-
-                            <form action="/upload" enctype="multipart/form-data" method="post" class="custom-form contact-form" role="form">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-floating">
-                                            <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Full Name" required="">
-                                            
-                                            <label for="floatingInput">Titulo</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 col-12"> 
-                                        <div class="form-floating">
-                                            <input type="text" name="album" id="email"  class="form-control" placeholder="Email address" required="">
-                                            
-                                            <label for="floatingInput">EP/Mixtape / Album</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-12">
-                                        <div class="form-floating">
-                                            <input type="file" name="ficheiro" id="ficheiro" class="form-control" placeholder="Ficheiro" required="">
-                                            
-                                            <label for="floatingInput">Ficheiro</label>
-                                        </div>
-
-                                        <div class="form-floating">
-                                            <input type="file" name="capa" id="name" class="form-control" placeholder="Capa / Foto" required="">
-                                            
-                                            <label for="floatingInput">Capa / Foto</label>
-                                        </div>
-
-                                        <div class="form-floating">
-                                            <textarea class="form-control" id="message" name="message" placeholder="Describe message here"></textarea>
-                                            
-                                            <label for="floatingTextarea">Alguma Descrição ?</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-12 ms-auto">
-                                        <button type="submit" class="form-control">Enviar</button>
-                                    </div>
-
-                                </div>
-                            </form>
                         </div>
 
+                        {% for usuario in usuarios %}
+        
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                            <div class="custom-block custom-block-overlay">
+                                <a href="artistas" class="custom-block-image-wrap">
+                                    <img src="{{ usuario.foto_perfil }}" class="custom-block-image img-fluid" alt="">
+                                </a>
+
+                                <div class="custom-block-info custom-block-overlay-info">
+                                    <h5 class="mb-1">
+                                        <a href="./listing-page">
+                                           {{usuario.nome_completo}}
+                                        </a>
+                                    </h5>
+
+                                    <p class="badge mb-0">@{{usuario.nome_artistico}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
                     </div>
                 </div>
+               
             </section>
+
         </main>
 
 

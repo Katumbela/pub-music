@@ -1,344 +1,363 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta name="description" content="Plataforma de Streaming Angolana , ganhe dinheiro por downloads da sua musica na nossa plataforma, obtenha variados recursos como capa de musicas e publicidade de marketing de suas musicas, assine hoje mesmo">
-        <meta name="author" content="Joao Afonso Katombela">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Pub Music - Publiue sua musica aqui</title>
-        <link rel="shortcut icon" type="image/x-icon"  href="{{ url_for('static', filename='images/pub.png') }} ">
+    <meta name="description"
+        content="Plataforma de Streaming Angolana , ganhe dinheiro por downloads da sua musica na nossa plataforma, obtenha variados recursos como capa de musicas e publicidade de marketing de suas musicas, assine hoje mesmo">
+    <meta name="author" content="Joao Afonso Katombela">
+
+    <title>Pub Music - Publiue sua musica aqui</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/pub.png') }} ">
 
 
-        <!-- CSS FILES -->        
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap" rel="stylesheet">
-                        
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }} ">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }} ">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }} ">
-        
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }} ">
 
-        <link href="{{ url_for('static', filename='css/templatemo-pod-talk.css') }} " rel="stylesheet">
-        
-<!--
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }} ">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }} ">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }} ">
+
+    <link href="{{ url_for('static', filename='css/templatemo-pod-talk.css') }} " rel="stylesheet">
+
+    <!--
 
 TemplateMo 584 Pub Music
 
 https://templatemo.com/tm-584-pod-talk
 
 -->
-    </head>
-    
-    <body>
+</head>
 
-        <main>
+<body>
 
-            <nav class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a class="navbar-brand me-lg-5 me-0" href="/">
-                        <img src="{{ url_for('static', filename='images/logo3.png') }} " class="logo-image me-4 img-fluid" style="height: 1.8em; width: 1.8em" alt="templatemo Pub Music">
-                    </a>
+    <main>
 
-                    <form action="#" method="get" class="custom-form search-form flex-fill me-3" role="search">
-                        <div class="input-group input-group-lg">    
-                            <input name="search" type="search" class="form-control" id="search" placeholder="Pesquisar Musicas" aria-label="Search">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand me-lg-5 me-0" href="/">
+                    <img src="{{ url_for('static', filename='images/logo3.png') }} " class="logo-image me-4 img-fluid"
+                        style="height: 1.8em; width: 1.8em" alt="templatemo Pub Music">
+                </a>
+                <form action="/pesquisar_musicas" method="post" class="custom-form search-form flex-fill me-3"
+                    role="search">
+                    <div class="input-group input-group-lg">
+                        <input name="search" type="search" class="form-control" id="search"
+                            placeholder="Pesquisar Músicas" aria-label="Search">
 
-                            <button type="submit" class="form-control" id="submit">
-                                <i class="bi-search"></i>
-                            </button>
-                        </div>
-                    </form>
-    
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <button type="submit" class="form-control" id="submit">
+                            <i class="bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-    
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-lg-auto">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/">Home</a>
-                            </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="about">Sobre</a>
-                            </li>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Home</a>
+                        </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mais</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about">Sobre</a>
+                        </li>
 
-                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="listing-page">Todas Músicas</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Mais</a>
 
-                                    <li><a class="dropdown-item" href="detail-page"> Artistas</a></li>
-                                </ul>
-                            </li>
-    
-                            <li class="nav-item">
-                                <a class="nav-link" href="contact">Contactar</a>
-                            </li>
-                        </ul>
+                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                                <li><a class="dropdown-item" href="./listing-page">Todas Músicas</a></li>
 
-                        <div class="ms-4">
-                            {% if user %}
-                                <a href="/dashboard" class="btn custom-btn custom-border-btn smoothscroll">Meu Perfil</a>
-                            {% else %}
-                                <a href="/conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
-                            {% endif %}
-                            
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            
+                                <li><a class="dropdown-item" href="artistas"> Artistas</a></li>
+                            </ul>
+                        </li>
 
-            <section class="hero-section">
-                <div class="container">
-                    <div class="row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact">Contactar</a>
+                        </li>
+                    </ul>
 
-                        <div class="col-lg-12 col-12">
-                            <div class="text-center mb-5 pb-5">
-                                <div class="row mb-5">
-                                    <div class="col-12 col-sm-12"> <h1 class="text-white">Coloque Suas Musicas</h1>
-
-                                        <p class="text-white"><b>{{user.nome_artistico}} </b> Deixe o Marketing com a Pub Music, de qualquer parte do mundo.</p>
-        
-                                        <a href="/conta" class="btn custom-btn smoothscroll mt-3">Comece Gratuitamente</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                               </div>
-
-                            <div class="owl-carousel owl-theme">
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/smiling-business-woman-with-folded-hands-against-white-wall-toothy-smile-crossed-arms.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">
-                                            Candice
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="owl-carousel-verified-image img-fluid" alt="">
-                                        </h4>
-
-                                        <span class="badge">Storytelling</span>
-
-                                        <span class="badge">Business</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/handsome-asian-man-listening-music-through-headphones.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">
-                                            William
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="owl-carousel-verified-image img-fluid" alt="">
-                                        </h4>
-
-                                        <span class="badge">Creative</span>
-
-                                        <span class="badge">Design</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-pinterest"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/cute-smiling-woman-outdoor-portrait.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">Taylor</h4>
-
-                                        <span class="badge">Modeling</span>
-
-                                        <span class="badge">Fashion</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-pinterest"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/man-portrait.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">Nick</h4>
-
-                                        <span class="badge">Acting</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-instagram"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-youtube"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/woman-posing-black-dress-medium-shot.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">
-                                            Elsa
-                                            <img src="{{ url_for('static', filename='images/verified.png') }} " class="owl-carousel-verified-image img-fluid" alt="">
-                                        </h4>
-
-                                        <span class="badge">Influencer</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-instagram"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-youtube"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="owl-carousel-info-wrap item">
-                                    <img src="{{ url_for('static', filename='images/profile/smart-attractive-asian-glasses-male-standing-smile-with-freshness-joyful-casual-blue-shirt-portrait-white-background.jpg') }}" class="owl-carousel-image img-fluid" alt="">
-
-                                    <div class="owl-carousel-info">
-                                        <h4 class="mb-2">Chan</h4>
-
-                                        <span class="badge">Education</span>
-                                    </div>
-
-                                    <div class="social-share">
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-linkedin"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-whatsapp"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="ms-4">
+                        {% if user %}
+                        <a href="/dashboard" class="btn custom-btn custom-border-btn smoothscroll">Meu Perfil</a>
+                        {% else %}
+                        <a href="/conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
+                        {% endif %}
 
                     </div>
                 </div>
-            </section>
+            </div>
+        </nav>
 
 
-            <section class="latest-podcast-section section-padding pb-0" id="section_2">
-                <div class="container">
-                    <div class="row justify-content-center">
+        <section class="hero-section">
+            <div class="container">
+                <div class="row">
 
-                        <div class="col-lg-12 col-12">
-                            <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">Tracks Em Destaques</h4>
+                    <div class="col-lg-12 col-12">
+                        <div class="text-center mb-5 pb-5">
+                            <div class="row mb-5">
+                                <div class="col-12 col-sm-12">
+                                    <h1 class="text-white">Coloque Suas Musicas</h1>
+
+                                    <p class="text-white"><b>{{user.nome_artistico}} </b> Deixe o Marketing com a Pub
+                                        Music, de qualquer parte do mundo.</p>
+
+                                    <a href="/conta" class="btn custom-btn smoothscroll mt-3">Comece Gratuitamente</a>
+                                </div>
                             </div>
+                            <br>
+                            <br>
+                            <br>
                         </div>
-                        {% for track in tracks_data[:2] %}
-                        <div style="border: none!important;" class="col-lg-6 col-12 mb-4 mb-lg-0">
-                            <div  style="border: none!important;" class="custom-block d-flex">
-                                <div class="">
-                                    <div class="custom-block-icon-wrap">
-                                        <div class="section-overlay"></div>
-                                        <a href="{{ url_for('details_page', track_id=track.id) }}">
-                                            <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="">
-                                             <a href="#" class="custom-block-icon">
-                                                <i class="bi-play-fill"></i>
-                                            </a>
-                                        </a>
-                                    </div>
 
-                                    <div class="mt-2">
-                                      
-                                    </div>
+                        <div class="owl-carousel owl-theme">
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/smiling-business-woman-with-folded-hands-against-white-wall-toothy-smile-crossed-arms.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">
+                                        Candice
+                                        <img src="{{ url_for('static', filename='images/verified.png') }} "
+                                            class="owl-carousel-verified-image img-fluid" alt="">
+                                    </h4>
+
+                                    <span class="badge">Storytelling</span>
+
+                                    <span class="badge">Business</span>
                                 </div>
 
-                                <div class="custom-block-info">
-                                   
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-twitter"></a>
+                                        </li>
 
-                                    <h5 class="mb-2">
-                                        <a href="{{ url_for('details_page', track_id=track.id) }}">
-                                            {{track.titulo}}
-                                        </a>
-                                    </h5>
-                                 
-                                  
-                                    <div class="custom-block-bottom d-flex justify-content-between mt-3">
-                                        <a href="#" class="bi-headphones me-1">
-                                            <span>120k</span>
-                                        </a>
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-facebook"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
 
-                                        <!-- <a href="#" class="bi-heart me-1">
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/handsome-asian-man-listening-music-through-headphones.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">
+                                        William
+                                        <img src="{{ url_for('static', filename='images/verified.png') }} "
+                                            class="owl-carousel-verified-image img-fluid" alt="">
+                                    </h4>
+
+                                    <span class="badge">Creative</span>
+
+                                    <span class="badge">Design</span>
+                                </div>
+
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-twitter"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-facebook"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-pinterest"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/cute-smiling-woman-outdoor-portrait.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">Taylor</h4>
+
+                                    <span class="badge">Modeling</span>
+
+                                    <span class="badge">Fashion</span>
+                                </div>
+
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-twitter"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-facebook"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-pinterest"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/man-portrait.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">Nick</h4>
+
+                                    <span class="badge">Acting</span>
+                                </div>
+
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-instagram"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-youtube"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/woman-posing-black-dress-medium-shot.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">
+                                        Elsa
+                                        <img src="{{ url_for('static', filename='images/verified.png') }} "
+                                            class="owl-carousel-verified-image img-fluid" alt="">
+                                    </h4>
+
+                                    <span class="badge">Influencer</span>
+                                </div>
+
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-instagram"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-youtube"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="owl-carousel-info-wrap item">
+                                <img src="{{ url_for('static', filename='images/profile/smart-attractive-asian-glasses-male-standing-smile-with-freshness-joyful-casual-blue-shirt-portrait-white-background.jpg') }}"
+                                    class="owl-carousel-image img-fluid" alt="">
+
+                                <div class="owl-carousel-info">
+                                    <h4 class="mb-2">Chan</h4>
+
+                                    <span class="badge">Education</span>
+                                </div>
+
+                                <div class="social-share">
+                                    <ul class="social-icon">
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-linkedin"></a>
+                                        </li>
+
+                                        <li class="social-icon-item">
+                                            <a href="#" class="social-icon-link bi-whatsapp"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <section class="latest-podcast-section section-padding pb-0" id="section_2">
+            <div class="container">
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-12 col-12">
+                        <div class="section-title-wrap mb-5">
+                            <h4 class="section-title">Tracks Em Destaques</h4>
+                        </div>
+                    </div>
+                    {% for track in tracks_data[:2] %}
+                    <div style="border: none!important;" class="col-lg-6 col-12 mb-4 mb-lg-0">
+                        <div style="border: none!important;" class="custom-block d-flex">
+                            <div class="">
+                                <div class="custom-block-icon-wrap">
+                                    <div class="section-overlay"></div>
+                                    <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                        <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="">
+                                        <a href="#" class="custom-block-icon">
+                                            <i class="bi-play-fill"></i>
+                                        </a>
+                                    </a>
+                                </div>
+
+                                <div class="mt-2">
+
+                                </div>
+                            </div>
+
+                            <div class="custom-block-info">
+
+
+                                <h5 class="mb-2">
+                                    <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                        {{track.titulo}}
+                                    </a>
+                                </h5>
+
+
+                                <div class="custom-block-bottom d-flex justify-content-between mt-3">
+                                    <a href="#" class="bi-headphones me-1">
+                                        <span>120k</span>
+                                    </a>
+
+                                    <!-- <a href="#" class="bi-heart me-1">
                                             <span>42.5k</span>
                                         </a> -->
 
 
-                                        <a href="#" class="bi-download">
-                                            <span>50k</span>
-                                        </a>
-                                    </div>
-                                    
-                                    <small style="font-size: 10px;">@{{track.nome_artistico}}</small>
-
+                                    <a href="#" class="bi-download">
+                                        <span>50k</span>
+                                    </a>
                                 </div>
 
-                                <!-- <div class="d-flex flex-column ms-auto">
+                                <small style="font-size: 10px;">@{{track.nome_artistico}}</small>
+
+                            </div>
+
+                            <!-- <div class="d-flex flex-column ms-auto">
                                     <a href="#" class="badge ms-auto">
                                         <i class="bi-heart"></i>
                                     </a>
@@ -347,22 +366,22 @@ https://templatemo.com/tm-584-pod-talk
                                         <i class="bi-bookmark"></i>
                                     </a>
                                 </div> -->
-                            </div>
                         </div>
+                    </div>
 
-                        {% endfor %}
-                    
-                        
-                        
-                        
-                        
-<!--                         
+                    {% endfor %}
+
+
+
+
+
+                    <!--                         
                         <div class="col-lg-6 col-12">
                             <div class="custom-block d-flex">
                                 <div class="">
                                     <div class="custom-block-icon-wrap">
                                         <div class="section-overlay"></div>
-                                        <a href="detail-page" class="custom-block-image-wrap">
+                                        <a href="artistas" class="custom-block-image-wrap">
                                             <img src="{{ url_for('static', filename='images/podcast/12577967_02.jpg') }}" class="custom-block-image img-fluid" alt="">
 
                                             <a href="#" class="custom-block-icon">
@@ -389,7 +408,7 @@ https://templatemo.com/tm-584-pod-talk
                                     </div>
 
                                     <h5 class="mb-2">
-                                        <a href="detail-page">
+                                        <a href="artistas">
                                             Daily Talk
                                         </a>
                                     </h5>
@@ -430,252 +449,197 @@ https://templatemo.com/tm-584-pod-talk
                             </div>
                         </div> -->
 
-                    </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
 
-            <section class="topics-section section-padding pb-0" id="section_3">
-                <div class="container">
-                    <div class="row">
 
-                        <div class="col-lg-12 col-12">
-                            <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">Musicos na Pub Music</h4>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-overlay">
-                                <a href="detail-page" class="custom-block-image-wrap">
-                                    <img src="{{ url_for('static', filename='images/topics/eddy.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                </a>
-
-                                <div class="custom-block-info custom-block-overlay-info">
-                                    <h5 class="mb-1">
-                                        <a href="listing-page">
-                                            Eddy Slogan
-                                        </a>
-                                    </h5>
-
-                                    <p class="badge mb-0">50 Musicas</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-overlay">
-                                <a href="detail-page" class="custom-block-image-wrap">
-                                    <img src="{{ url_for('static', filename='images/topics/eddy.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                </a>
-
-                                <div class="custom-block-info custom-block-overlay-info">
-                                    <h5 class="mb-1">
-                                        <a href="listing-page">
-                                            Eddy Slogan
-                                        </a>
-                                    </h5>
-
-                                    <p class="badge mb-0">12 Musicas</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-overlay">
-                                <a href="detail-page" class="custom-block-image-wrap">
-                                    <img src="{{ url_for('static', filename='images/topics/capa-eddy.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                </a>
-
-                                <div class="custom-block-info custom-block-overlay-info">
-                                    <h5 class="mb-1">
-                                        <a href="listing-page">
-                                            Eddy Slogan
-                                        </a>
-                                    </h5>
-
-                                    <p class="badge mb-0">35 Musicas</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block custom-block-overlay">
-                                <a href="detail-page" class="custom-block-image-wrap">
-                                    <img src="{{ url_for('static', filename='images/topics/eddy.jpg') }}" class="custom-block-image img-fluid" alt="">
-                                </a>
-
-                                <div class="custom-block-info custom-block-overlay-info">
-                                    <h5 class="mb-1">
-                                        <a href="listing-page">
-                                            Eddy Slogan
-                                        </a>
-                                    </h5>
-
-                                    <p class="badge mb-0">12 Musicas</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-
-            <section class="trending-podcast-section section-padding">
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col-lg-12 col-12">
-                            <div class="section-title-wrap mb-5">
-                                <h4 class="section-title">+ Baixados & Ouvidos</h4>
-                            </div>
-                        </div>
-                        {% for track in tracks_data %}
-                        <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                          <div class="custom-block custom-block-full">
-                            <div class="custom-block-image-wrap">
-                              <a href="{{ url_for('details_page', track_id=track.id) }}">
-                                <img src="{{ track.capa_url }}" class="custom-block-image img-fluid" alt="{{track.capa_url}}">
-                              </a>
-                            </div>
-                            <div class="custom-block-info">
-                              <h5 class="mb-2">
-                                <a href="{{ url_for('details_page', track_id=track.id) }}">
-                                  {{ track.titulo }}
-                                </a>
-                              </h5>
-                              <div class="profile-block d-flex">
-                                <img src="{{track.foto_perfil_url}}" class="profile-block-image img-fluid" alt="">
-                                <p>{{ track.nome_artistico }} <strong>Musico</strong></p>
-                              </div>
-                              <p class="mb-0">{{ track.message[:25] + '...' if track.message|length > 25 else track.message }}</p>
-                      
-                              <!-- ... (seu HTML existente) ... -->
-                            </div>
-                            <div class="social-share d-flex flex-column ms-auto">
-                              <a href="#" class="badge ms-auto">
-                                <i class="bi-heart"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      {% endfor %}
-                  
-                    </div>
-                </div>
-            </section>
-        </main>
-
-
-        <footer class="site-footer">   
+        <section class="trending-podcast-section section-padding">
             <div class="container">
                 <div class="row">
 
-                    <div class="col-lg-6 col-12 mb-5 mb-lg-0">
-                        <div class="subscribe-form-wrap">
-                            <h6>Subscribe. Every weekly.</h6>
-
-                            <form class="custom-form subscribe-form" action="#" method="get" role="form">
-                                <input type="email" name="subscribe-email" id="subscribe-email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email Address" required="">
-
-                                <div class="col-lg-12 col-12">
-                                    <button type="submit" class="form-control" id="submit">Subscribe</button>
-                                </div>
-                            </form>
+                    <div class="col-lg-12 col-12">
+                        <div class="section-title-wrap mb-5">
+                            <h4 class="section-title">+ Baixados & Ouvidos</h4>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-md-0 mb-lg-0">
-                        <h6 class="site-footer-title mb-3">Contactar</h6>
-
-                        <p class="mb-2"><strong class="d-inline me-2">Phone:</strong> 010-020-0340</p>
-
-                        <p>
-                            <strong class="d-inline me-2">Email:</strong>
-                            <a href="#">contato@pub-music.com</a> 
-                        </p>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-12">
-                        <h6 class="site-footer-title mb-3">Download Mobile</h6>
-
-                        <div class="site-footer-thumb mb-4 pb-2">
-                            <div class="d-flex flex-wrap">
-                                <a href="#">
-                                    <img src="{{ url_for('static', filename='images/app-store.png') }} " class="me-3 mb-2 mb-lg-0 img-fluid" alt="">
+                    {% for track in tracks_data[:5] %}
+                    <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                        <div class="custom-block custom-block-full">
+                            <div class="custom-block-image-wrap">
+                                <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                    <img src="{{ track.capa_url }}" class="custom-block-image img-fluid"
+                                        alt="{{track.capa_url}}">
                                 </a>
+                            </div>
+                            <div class="custom-block-info">
+                                <h5 class="mb-2">
+                                    <a href="{{ url_for('details_page', track_id=track.id) }}">
+                                        {{ track.titulo }}
+                                    </a>
+                                </h5>
+                                <div class="profile-block d-flex">
+                                    <img src="{{track.foto_perfil_url}}" class="profile-block-image img-fluid" alt="">
+                                    <p>{{ track.nome_artistico }} <strong>Musico</strong></p>
+                                </div>
+                                <p class="mb-0">{{ track.message[:25] + '...' if track.message|length > 25 else
+                                    track.message }}</p>
 
-                                <a href="#">
-                                    <img src="{{ url_for('static', filename='images/play-store.png') }} " class="img-fluid" alt="">
+                                <!-- ... (seu HTML existente) ... -->
+                            </div>
+                            <div class="social-share d-flex flex-column ms-auto">
+                                <a href="#" class="badge ms-auto">
+                                    <i class="bi-heart"></i>
                                 </a>
                             </div>
                         </div>
-
-                        <h6 class="site-footer-title mb-3">Social</h6>
-
-                        <ul class="social-icon">
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-instagram"></a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-twitter"></a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-whatsapp"></a>
-                            </li>
-                        </ul>
                     </div>
+                    {% endfor %}
 
                 </div>
             </div>
+        </section>
 
-            <div class="container pt-5">
-                <div class="row align-items-center">
+        <section class="topics-section section-padding pb-0" id="section_3">
+            <div class="container">
+                <div class="row">
 
-                    <div class="col-lg-2 col-md-3 col-12">
-                        <a class="navbar-brand" href="/">
-                            <img src="{{ url_for('static', filename='images/logo3.png') }} " class="logo-image img-fluid" alt="templatemo Pub Music">
-                        </a>
+                    <div class="col-lg-12 col-12">
+                        <div class="section-title-wrap mb-5">
+                            <h4 class="section-title">Musicos na Pub Music</h4>
+                        </div>
                     </div>
 
-                    <div class="col-lg-7 col-md-9 col-12">
-                        <ul class="site-footer-links">
-                            <li class="site-footer-link-item">
-                                <a href="#" class="site-footer-link">Homepage</a>
-                            </li>
+                    {% for usuario in usuarios[:5] %}
 
-                            <li class="site-footer-link-item">
-                                <a href="#" class="site-footer-link">Browse Musicas</a>
-                            </li>
+                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                        <div class="custom-block custom-block-overlay">
+                            <a href="artistas" class="custom-block-image-wrap">
+                                <img src="{{ usuario.foto_perfil }}" class="custom-block-image img-fluid" alt="">
+                            </a>
 
-                            <li class="site-footer-link-item">
-                                <a href="#" class="site-footer-link">Help Center</a>
-                            </li>
+                            <div class="custom-block-info custom-block-overlay-info">
+                                <h5 class="mb-1">
+                                    <a href="./listing-page">
+                                        {{usuario.nome_completo}}
+                                    </a>
+                                </h5>
 
-                            <li class="site-footer-link-item">
-                                <a href="#" class="site-footer-link">Contact Us</a>
-                            </li>
-                        </ul>
+                                <p class="badge mb-0">@{{usuario.nome_artistico}}</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-lg-3 col-12">
-                        <p class="copyright-text mb-0">Copyright © 2023 Pub Music
+                    {% endfor %}
+                </div>
+            </div>
+            <center><a class="btn-primary btn" href="./todos_artistas">Ver Todos <i class="bi bi-arrow-right"></i></a>
+            </center>
+        </section>
+
+    </main>
+
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-12 mb-5 mb-lg-0">
+                    <div class="subscribe-form-wrap">
+                        <h6>Subscreva a newsletter</h6>
+
+                        <form class="custom-form subscribe-form" action="#" method="get" role="form">
+                            <input type="email" name="subscribe-email" id="subscribe-email" pattern="[^ @]*@[^ @]*"
+                                class="form-control" placeholder="Email Address" required="">
+
+                            <div class="col-lg-12 col-12">
+                                <button type="submit" class="form-control" id="submit">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-md-0 mb-lg-0">
+                    <h6 class="site-footer-title mb-3">Contactar</h6>
+
+                    <p class="mb-2"><strong class="d-inline me-2">Phone:</strong> 010-020-0340</p>
+
+                    <p>
+                        <strong class="d-inline me-2">Email:</strong>
+                        <a href="#">contato@pub-music.com</a>
+                    </p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+
+
+                    <h6 class="site-footer-title mb-3">Social</h6>
+
+                    <ul class="social-icon">
+                        <li class="social-icon-item">
+                            <a href="#" class="social-icon-link bi-instagram"></a>
+                        </li>
+
+                        <li class="social-icon-item">
+                            <a href="#" class="social-icon-link bi-twitter"></a>
+                        </li>
+
+                        <li class="social-icon-item">
+                            <a href="#" class="social-icon-link bi-whatsapp"></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container pt-5">
+            <div class="row align-items-center">
+
+                <div class="col-lg-2 col-md-3 col-12">
+                    <a class="navbar-brand" href="/">
+                        <img src="{{ url_for('static', filename='images/logo3.png') }} " class="logo-image img-fluid"
+                            alt="templatemo Pub Music">
+                    </a>
+                </div>
+
+                <div class="col-lg-7 col-md-9 col-12">
+                    <ul class="site-footer-links">
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Homepage</a>
+                        </li>
+
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Browse Musicas</a>
+                        </li>
+
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Help Center</a>
+                        </li>
+
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-12">
+                    <p class="copyright-text mb-0">Copyright © 2023 Pub Music
                         <br><br>
-                       
-                    </div>
+
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
 
 
-        <!-- JAVASCRIPT FILES -->
-        <script src = "{{ url_for('static', filename = 'js/jquery.min.js' ) }}"></script>
-        <script src = "{{ url_for('static', filename = 'js/bootstrap.bundle.min.js' ) }}"></script>
-        <script src = "{{ url_for('static', filename = 'js/owl.carousel.min.js' ) }}"></script>
-        <script src = "{{ url_for('static', filename = 'js/custom.js' ) }}"></script>
+    <!-- JAVASCRIPT FILES -->
+    <script src="{{ url_for('static', filename = 'js/jquery.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename = 'js/bootstrap.bundle.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename = 'js/owl.carousel.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename = 'js/custom.js' ) }}"></script>
 
-    </body>
+</body>
+
 </html>

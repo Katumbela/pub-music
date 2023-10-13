@@ -66,10 +66,22 @@ def home():
             tracks_data.append(track_data)
             print(tracks_data)
 
+         # Recuperar todos os usuários da coleção 'usuarios'
+        usuarios_ref = db.collection('usuarios')
+        usuarios = usuarios_ref.stream()
+
+        # Criar uma lista para armazenar os dados dos usuários
+        usuarios_data = []
+
+        # Iterar sobre os usuários e adicionar os dados à lista
+        for usuario in usuarios:
+            usuario_data = usuario.to_dict()
+            usuarios_data.append(usuario_data)
+
         if usuario_data:
             # Exibir dados do usuário
             
-            return render_template("index.html",tracks_data = tracks_data,  user = usuario_data)
+            return render_template("index.html",tracks_data = tracks_data, usuarios = usuarios_data,  user = usuario_data)
         else:
                 # Se a sessão não contiver dados do usuário, redirecionar para a página de login
                 
@@ -94,7 +106,23 @@ def portfolio():
 
 @app.route('/listing-page')
 def contact():
-    return render_template("listing-page.html")
+        usuario_data = session.get('usuario_data', None)
+        # Obter todas as músicas da coleção 'musicas'
+        tracks_ref = db.collection('musicas')
+        tracks = tracks_ref.stream()
+
+        # Criar uma lista para armazenar os dados das faixas
+        tracks_data = []
+
+        
+        # Iterar sobre as faixas e adicionar os dados à lista
+        for track in tracks:
+            track_data = track.to_dict()
+            track_data['id'] = track.id  # Adicionar o ID do documento à lista
+            tracks_data.append(track_data)
+            print(tracks_data)
+
+        return render_template("listing-page.html", tracks = tracks_data)
 
 
 @app.route('/postar')
@@ -325,6 +353,50 @@ def upload():
     })
 
     return render_template("success.html", msg=f"Seu projeto foi publicado com sucesso {usuario_data.get('nome_completo', '')}")
+
+
+@app.route('/todos_artistas')
+def todos_usuarios():
+    # Recuperar todos os usuários da coleção 'usuarios'
+    usuarios_ref = db.collection('usuarios')
+    usuarios = usuarios_ref.stream()
+
+    # Criar uma lista para armazenar os dados dos usuários
+    usuarios_data = []
+
+    # Iterar sobre os usuários e adicionar os dados à lista
+    for usuario in usuarios:
+        usuario_data = usuario.to_dict()
+        usuarios_data.append(usuario_data)
+
+    # Passar a lista de usuários para o template
+    return render_template("todos_usuarios.html", usuarios=usuarios_data)
+
+
+@app.route('/pesquisar_musicas', methods=['GET', 'POST'])
+def pesquisar_musicas():
+    if request.method == 'POST':
+        termo_pesquisa = request.form['search']
+        musicas_ref = db.collection('musicas')
+        
+        resultados_pesquisa = musicas_ref.where('titulo', '==', termo_pesquisa).stream()
+
+
+
+
+        resultados_data = []
+
+        for resultado in resultados_pesquisa:
+            resultado_data = resultado.to_dict()
+            resultados_data.append(resultado_data)
+            print(resultados_data)
+
+        # app.logger.info(resultados_data)  # Adicione esta linha para registrar no console
+
+        return render_template("resultados_pesquisa.html", resultados_data=resultados_data)
+
+    return render_template("pesquisa_musicas.html")
+
 
 
 @app.errorhandler(404)

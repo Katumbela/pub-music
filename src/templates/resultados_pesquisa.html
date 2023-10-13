@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Pesquisa</title>
+</head>
+<body>
+    <h1>Resultados da Pesquisa</h1>
+
+    <ul>
+        <!-- Ajuste conforme necessário para o seu modelo -->
+{% for resultado in resultados_data %}
+<p>{{ resultado.titulo }}</p>
+<!-- Adicione outros campos conforme necessário -->
+{% endfor %}
+
+    </ul>
+
+    <!-- Adicione esta linha para depurar variáveis -->
+    <pre>{{ resultados_data }}</pre>
+</body>
+</html>
