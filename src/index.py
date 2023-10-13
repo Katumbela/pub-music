@@ -335,5 +335,4 @@ def page_not_found(e):
 
 if __name__ == '__main__':
     #port = int(os.environ.get('PORT', 5000))
-    print(os.getcwd())
-    app.run(debug=True)
+    app.run()
