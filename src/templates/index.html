@@ -87,11 +87,12 @@ https://templatemo.com/tm-584-pod-talk
                         </ul>
 
                         <div class="ms-4">
-                            {%if user.nome_completo != "" %}
-                            <a href="/dashboard" class="btn custom-btn custom-border-btn smoothscroll">Meu Perfil</a>
-                            {%else %}
-                            <a href="/conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
-                            {%endif%}
+                            {% if user %}
+                                <a href="/dashboard" class="btn custom-btn custom-border-btn smoothscroll">Meu Perfil</a>
+                            {% else %}
+                                <a href="/conta" class="btn custom-btn custom-border-btn smoothscroll">Minha Conta</a>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>

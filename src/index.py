@@ -135,6 +135,7 @@ def cadastro():
         email = request.form['email']
         telefone = request.form['telefone']
         password = request.form['password']
+        posicao = request.form['posicao']
 
         # Verificar se já existe uma conta com o mesmo e-mail ou telefone
         conta_existente = db.collection('usuarios').where('email', '==', email).get() or \
@@ -153,6 +154,7 @@ def cadastro():
             'email': email,
             'telefone': telefone,
             'password':password,
+            'posicao':posicao,
             'data_cadastro': data_cadastro,
             'foto_perfil': 'https://firebasestorage.googleapis.com/v0/b/crymoney-16fd9.appspot.com/o/default.png?alt=media&token=30b3a4b7-0286-4c19-bee0-4ac6a7f5dcc2&_gl=1*1gaoxf5*_ga*MzI0NzYxNDQwLjE2OTQ0NDI3ODY.*_ga_CW55HF8NVT*MTY5NzEzOTg5MC4xNC4xLjE2OTcxNDQ5OTcuNS4wLjA.'
         }
